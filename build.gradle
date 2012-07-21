@@ -1,5 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'maven'
+
+version = '0.1'
 
 repositories {
     mavenCentral()
@@ -12,3 +15,42 @@ dependencies {
     compile 'org.jboss:jboss-vfs:3.1.0.Final'
 }
 
+task sourcesJar(type: Jar, dependsOn:classes) {
+     classifier = 'sources'
+     from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn:javadoc) {
+     classifier = 'javadoc'
+     from javadoc.destinationDir
+}
+
+artifacts {
+     archives sourcesJar
+     archives javadocJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri(mavenRepository))
+        }
+    }
+}
+
+[install.repositories.mavenInstaller, uploadArchives.repositories.mavenDeployer]*.pom*.whenConfigured { pom ->
+    pom.project {
+        groupId 'org.seasar.jboss7'
+        artifactId 's2-jboss7'
+        inceptionYear '2012'
+        packaging 'jar'
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
+    }
+    pom.dependencies*.scope = "provided"
+}
