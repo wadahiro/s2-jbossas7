@@ -41,7 +41,12 @@ public class VFSResourcesFactory implements ResourcesFactory {
             debugPhysicalURI(physicalURI);
 
             if (url.getPath().toLowerCase().endsWith(".jar/")) {
-                return handleJar(physicalURI, rootPackage, rootDir);
+                File file = new File(url.getPath());
+                if (file.isDirectory()) {
+                    return handleDir(physicalURI, rootPackage, rootDir);
+                } else {
+                    return handleJar(physicalURI, rootPackage, rootDir);
+                }
             } else {
                 return handleDir(physicalURI, rootPackage, rootDir);
             }
