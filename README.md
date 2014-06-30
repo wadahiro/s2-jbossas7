@@ -35,7 +35,7 @@ s2-jbossas7は、S2ContainerをJBoss AS7上で動作させるための拡張モ�
         <dependency>
             <groupId>org.seasar.jboss</groupId>
             <artifactId>s2-jbossas7</artifactId>
-            <version>0.1</version>
+            <version>0.2</version>
         </dependency>
 ```
 
